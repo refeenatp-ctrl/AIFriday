@@ -1,0 +1,18 @@
+Real-World Example: "Research & Write a 5-Page Market Report"
+How an Orchestrator handles it:
+Upfront Plan: Orchestrator analyzes the request and breaks it into 3 sub-tasks:
+Task A: Search competitor news.
+Task B: Gather financial metrics.
+Task C: Write market overview.
+Execution: Delegates Task A to Search Agent, Task B to Finance Agent, Task C to Writer Agent (often running A and B in parallel).
+Synthesis: Collects all 3 outputs, merges them into a final document, and finishes.
+
+How a Supervisor handles it:
+Step 1: Supervisor receives prompt, looks at the current graph state, and calls Search Agent.
+Step 2: Search Agent returns data. Supervisor inspects output: "This data is missing financial metrics."
+Step 3: Supervisor dynamically decides to call Finance Agent.
+Step 4: Finance Agent returns metrics. Supervisor evaluates state: "Now we have enough data." It calls Writer Agent.
+Step 5: Writer Agent produces draft. Supervisor reviews: "Draft is complete." Supervisor routes to END.
+Summary Checklist: Which one do you need?
+Choose Orchestrator if your task can be broken down into predictable sub-tasks upfront and executed in parallel.
+Choose Supervisor if the workflow is unpredictable and needs iterative evaluation after each step to determine the next action.
