@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise GenAI Agent Architecture</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background grid decor -->
+    <div class="grid-background"></div>
+    <div class="glow-decor-1"></div>
+    <div class="glow-decor-2"></div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="main-header">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fa-solid fa-network-wired"></i></div>
+                <div class="logo-text">
+                    <h1>Enterprise GenAI Agent Architecture</h1>
+                    <p>Multi-Agent Orchestration & Integration Framework</p>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <div class="mode-selector">
+                    <button id="btn-mode-interactive" class="mode-btn active" title="Free exploration Mode">
+                        <i class="fa-solid fa-hand-pointer"></i> Interactive Mode
+                    </button>
+                    <button id="btn-mode-presentation" class="mode-btn" title="Layer-by-layer guided slides">
+                        <i class="fa-solid fa-play"></i> Presentation Mode
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- PRESENTATION PROGRESS BAR -->
+        <div class="presentation-progress-bar" id="presentation-progress" style="display: none;">
+            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+
+        <!-- MAIN LAYOUT -->
+        <div class="layout-body">
+            <!-- CANVAS WITH ARCHITECTURE DRAWING -->
+            <div class="architecture-canvas">
+                <!-- SVG Connections Overlay -->
+                <svg class="connection-svg" id="connection-svg"></svg>
+
+                <!-- LAYER 1: FRONTEND -->
+                <section class="arch-layer" id="layer-frontend">
+                    <div class="layer-header">
+                        <span class="layer-badge badge-frontend">Presentation Layer</span>
+                        <h2>Front End (Angular Web App)</h2>
+                    </div>
+                    
+                    <div class="frontend-modules">
+                        <div class="module-card" id="fe-admin" data-desc="Configuration panel for system admins to manage prompts, API routing, and user policies.">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <span>Admin</span>
+                        </div>
+                        <div class="module-card" id="fe-dashboard" data-desc="Real-time KPI visuals, token utilization counters, and multi-agent operations metrics.">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="module-card" id="fe-analysis" data-desc="Deeper analytics suite for querying transaction logs and agent performance indexes.">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                            <span>Analysis</span>
+                        </div>
+                        <div class="module-card" id="fe-forecast" data-desc="Predictive trend forecasting models based on database records and past workloads.">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Forecast</span>
+                        </div>
+                        <div class="module-card" id="fe-report" data-desc="Generates downloadable CSV/PDF reports on agent activity, task results, and costs.">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <span>Report</span>
+                        </div>
+                        <div class="module-card" id="fe-chat" data-desc="Collaborative chat interface for querying the multi-agent system directly.">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Chat</span>
+                        </div>
+                        <div class="module-card" id="fe-logs" data-desc="Audit logs, system events console, and debugging feed for telemetry.">
+                            <i class="fa-solid fa-terminal"></i>
+                            <span>Logs</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MIDDLE SECTION: GATEWAY / INFRA & BACKEND FLASK -->
+                <div class="middle-layout">
+                    <!-- LEFT COLUMN: INTEGRATION & GATEWAY -->
+                    <div class="infra-column">
+                        <!-- TCS GENAI GATEWAY -->
+                        <div class="arch-card gateway-card" id="node-gateway">
+                            <div class="card-header">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <h3>TCS GenAI Gateway</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Centralized gateway for API management, enterprise security compliance, auth checks, and rate-limiting.</p>
+                                <div class="port port-out" id="port-gt-bk"></div>
+                                <div class="port port-in" id="port-bk-gt"></div>
+                                <div class="port port-out" id="port-gt-nj"></div>
+                                <div class="port port-in" id="port-nj-gt"></div>
+                            </div>
+                        </div>
+
+                        <!-- APPLICATION DATABASE -->
+                        <div class="arch-card db-card" id="node-app-db">
+                            <div class="card-header">
+                                <i class="fa-solid fa-database"></i>
+                                <h3>App DB (SQLite)</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Lightweight transactional database for agent session records, audit tracks, and user state storage.</p>
+                                <div class="port port-out" id="port-db-bk"></div>
+                                <div class="port port-in" id="port-bk-db"></div>
+                                <div class="port port-out" id="port-db-nj"></div>
+                                <div class="port port-in" id="port-nj-db"></div>
+                            </div>
+                        </div>
+
+                        <!-- NOTIFICATION JOB -->
+                        <div class="arch-card job-card" id="node-notification-job">
+                            <div class="card-header">
+                                <i class="fa-solid fa-bell"></i>
+                                <h3>Notification Job</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Asynchronous background job worker pulling from queue database to dispatch email or Webhook alerts.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN: FLASK BACKEND WITH LANGGRAPH AGENTS -->
+                    <section class="backend-container" id="layer-backend">
+                        <div class="backend-banner">
+                            <span class="layer-badge badge-backend">Server Layer</span>
+                            <h2>Backend (Python Flask Framework)</h2>
+                        </div>
+
+                        <!-- GUARD RAILS -->
+                        <div class="guardrail-box" id="node-guardrail" data-desc="Safety and compliance middleware. Performs pre-processing on prompts and post-processing on LLM outputs to prevent jailbreaks, data leakage, and system vulnerabilities.">
+                            <div class="box-title">
+                                <i class="fa-solid fa-user-lock"></i>
+                                <h4>Guardrails Layer</h4>
+                            </div>
+                            <div class="guardrail-tags">
+                                <span class="tag tag-threat"><i class="fa-solid fa-shield-virus"></i> Threat Detection</span>
+                                <span class="tag tag-gdpr"><i class="fa-solid fa-scale-balanced"></i> GDPR Compliance</span>
+                                <span class="tag tag-pii"><i class="fa-solid fa-eye-slash"></i> PII Masking</span>
+                            </div>
+                        </div>
+
+                        <!-- AGENT LAYER (LANGRAPH) -->
+                        <div class="agent-box" id="node-agent-layer">
+                            <div class="box-title">
+                                <i class="fa-solid fa-brain"></i>
+                                <h4>Agent Layer (LangGraph)</h4>
+                            </div>
+                            
+                            <!-- Orchestrator Row -->
+                            <div class="agent-row orchestrators">
+                                <div class="agent-badge planner" id="agent-planner" data-desc="Deconstructs complex user instructions into concrete steps, assigning tasks to appropriate domain agents.">
+                                    <i class="fa-solid fa-map"></i> Planner
+                                </div>
+                                <div class="agent-badge supervisor" id="agent-supervisor" data-desc="The main router of the LangGraph state diagram. Selects the next agent to invoke, manages token budget, and tracks overall mission progress.">
+                                    <i class="fa-solid fa-users-gear"></i> Supervisor
+                                </div>
+                                <div class="agent-badge rag" id="agent-rag" data-desc="Retrieval-Augmented Generation node. Connects queries to document stores and vector databases for verified grounding.">
+                                    <i class="fa-solid fa-magnifying-glass"></i> RAG Engine
+                                </div>
+                            </div>
+
+                            <!-- Domain Agent Container -->
+                            <div class="domain-agents-box" id="node-domain-agents" data-desc="Specialized workflow executors containing custom prompts, fine-tuned models, and targeted tool boundaries.">
+                                <div class="domain-title">Domain Agents</div>
+                                <div class="domain-grid">
+                                    <div class="domain-card" id="agent-finance">
+                                        <i class="fa-solid fa-coins"></i>
+                                        <span>Finance</span>
+                                    </div>
+                                    <div class="domain-card" id="agent-ops">
+                                        <i class="fa-solid fa-gears"></i>
+                                        <span>Operations</span>
+                                    </div>
+                                    <div class="domain-card" id="agent-support">
+                                        <i class="fa-solid fa-headset"></i>
+                                        <span>Support</span>
+                                    </div>
+                                    <div class="domain-card" id="agent-hr">
+                                        <i class="fa-solid fa-people-group"></i>
+                                        <span>HR</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Context & Support Row -->
+                            <div class="agent-row support-row">
+                                <div class="agent-badge reflection" id="agent-reflection" data-desc="Self-correction node. Audits intermediate agent results and returns them with critique if accuracy thresholds are missed.">
+                                    <i class="fa-solid fa-rotate-left"></i> Reflection
+                                </div>
+                                <div class="agent-badge memory" id="agent-memory" data-desc="Short-term conversational state memory and long-term user profile retrieval store.">
+                                    <i class="fa-solid fa-sd-card"></i> Memory
+                                </div>
+                                <div class="agent-badge summarizer" id="agent-summarizer" data-desc="Condenses history arrays to compress the context window and reduce LLM operational costs.">
+                                    <i class="fa-solid fa-compress"></i> Summarizer
+                                </div>
+                            </div>
+
+                            <div class="port port-out" id="port-ag-mcp"></div>
+                            <div class="port port-in" id="port-mcp-ag"></div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- LAYER 3: MCP SERVER -->
+                <section class="arch-layer" id="layer-mcp">
+                    <div class="mcp-flex-container">
+                        <!-- MCP SERVER BOX -->
+                        <div class="mcp-server-box" id="node-mcp-server">
+                            <div class="layer-header">
+                                <span class="layer-badge badge-mcp">Integration Layer</span>
+                                <h2>Model Context Protocol (MCP) Server</h2>
+                            </div>
+                            
+                            <div class="mcp-tools">
+                                <div class="tool-badge" id="tool-email" data-desc="Standardized tool wrapper enabling agents to read, draft, and dispatch automated updates.">
+                                    <i class="fa-solid fa-envelope"></i> Email Tool
+                                </div>
+                                <div class="tool-badge" id="tool-calendar" data-desc="Exposes scheduling calendars for query matches, booking, and alert triggers.">
+                                    <i class="fa-solid fa-calendar-days"></i> Calendar Tool
+                                </div>
+                                <div class="tool-badge" id="tool-file" data-desc="Facilitates secure file reading and document writes on specified sandbox workspaces.">
+                                    <i class="fa-solid fa-file-code"></i> File Access
+                                </div>
+                                <div class="tool-badge" id="tool-search" data-desc="Web search and search index connector for fetching live market or external telemetry.">
+                                    <i class="fa-solid fa-globe"></i> Web Search
+                                </div>
+                                <div class="tool-badge" id="tool-custom" data-desc="Generic integration container for legacy ERP / CRM systems.">
+                                    <i class="fa-solid fa-puzzle-piece"></i> Custom ERP
+                                </div>
+                            </div>
+                            <div class="port port-out" id="port-mcp-db"></div>
+                            <div class="port port-in" id="port-db-mcp"></div>
+                        </div>
+
+                        <!-- MCP SQLITE DB -->
+                        <div class="arch-card db-card mcp-db" id="node-mcp-db">
+                            <div class="card-header">
+                                <i class="fa-solid fa-database"></i>
+                                <h3>MCP DB (SQLite)</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Maintains persistent registry configuration, tool invocation permission scopes, and local tool audits.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- DETAIL / CONTENT PANEL (SIDEBAR) -->
+            <aside class="details-panel" id="details-panel">
+                <div class="panel-placeholder" id="panel-placeholder">
+                    <i class="fa-solid fa-circle-info pulse-icon"></i>
+                    <h3>Interactive Details</h3>
+                    <p>Hover over or click any architectural component to view its technical stack, responsibility scope, and data flows.</p>
+                </div>
+                <div class="panel-content" id="panel-content" style="display: none;">
+                    <div class="panel-header-row">
+                        <span class="panel-tag" id="panel-category">Layer Name</span>
+                        <button class="close-panel-btn" id="close-panel" title="Close Panel"><i class="fa-solid fa-times"></i></button>
+                    </div>
+                    <h3 id="panel-title">Component Name</h3>
+                    <div class="panel-divider"></div>
+                    <div class="info-section">
+                        <h4><i class="fa-solid fa-quote-left"></i> Overview</h4>
+                        <p id="panel-description">Detailed description of what this does in the architecture...</p>
+                    </div>
+                    <div class="info-section">
+                        <h4><i class="fa-solid fa-cubes"></i> Tech Stack & Implementation</h4>
+                        <ul id="panel-tech-list">
+                            <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h4><i class="fa-solid fa-circle-nodes"></i> Active Integrations</h4>
+                        <p id="panel-data-flow">Data flows will display here...</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- PRESENTATION CONTROLS FOOTER -->
+        <footer class="presentation-controls" id="presentation-controls" style="display: none;">
+            <button id="btn-prev" class="ctrl-btn" disabled><i class="fa-solid fa-arrow-left"></i> Previous Layer</button>
+            <div class="slide-indicator">
+                <span id="current-slide">1</span> / <span id="total-slides">6</span>
+            </div>
+            <button id="btn-next" class="ctrl-btn">Next Layer <i class="fa-solid fa-arrow-right"></i></button>
+            <button id="btn-exit" class="ctrl-btn exit-btn" title="Exit Presentation"><i class="fa-solid fa-xmark"></i> Exit</button>
+        </footer>
+    </div>
+
+    <!-- Script file -->
+    <script src="script.js"></script>
+</body>
+</html>
